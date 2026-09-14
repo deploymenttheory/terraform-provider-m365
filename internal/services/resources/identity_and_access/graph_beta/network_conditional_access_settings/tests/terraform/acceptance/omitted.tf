@@ -1,0 +1,1 @@
+resource "microsoft365_graph_beta_identity_and_access_network_conditional_access_settings" "test" {}

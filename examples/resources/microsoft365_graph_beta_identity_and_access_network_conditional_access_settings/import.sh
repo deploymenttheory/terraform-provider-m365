@@ -1,0 +1,2 @@
+# Import the tenant-wide singleton using its fixed ID.
+terraform import microsoft365_graph_beta_identity_and_access_network_conditional_access_settings.example conditionalAccess

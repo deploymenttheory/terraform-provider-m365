@@ -80,6 +80,8 @@ const (
 type GraphErrorOptions struct {
 	// PreserveStateOnReadBadRequest keeps validation errors from removing existing state.
 	PreserveStateOnReadBadRequest bool
+	// PreserveStateOnReadNotFound keeps unavailable singleton endpoints in state.
+	PreserveStateOnReadNotFound bool
 }
 
 // HandleKiotaGraphError processes Graph API errors with the existing default semantics.
@@ -160,7 +162,7 @@ func HandleKiotaGraphErrorWithOptions(
 		return
 
 	case 404:
-		if operation == constants.TfOperationRead {
+		if operation == constants.TfOperationRead && !options.PreserveStateOnReadNotFound {
 			if _, ok := resp.(*resource.ReadResponse); ok {
 				tflog.Warn(ctx, "Resource not found (404 Response), removing from state")
 				removeResourceFromState(ctx, resp)
