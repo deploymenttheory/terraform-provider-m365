@@ -1,0 +1,11 @@
+{
+  "error": {
+    "code": "BadRequest",
+    "message": "Error creating iOS/iPadOS device configuration template",
+    "innerError": {
+      "date": "2026-03-12T08:19:05",
+      "request-id": "00000000-0000-0000-0000-000000000000",
+      "client-request-id": "00000000-0000-0000-0000-000000000000"
+    }
+  }
+}

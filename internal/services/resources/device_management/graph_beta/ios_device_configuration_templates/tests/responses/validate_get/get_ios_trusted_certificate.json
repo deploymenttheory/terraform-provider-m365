@@ -1,0 +1,18 @@
+{
+  "@odata.type": "#microsoft.graph.iosTrustedRootCertificate",
+  "@odata.context": "https://graph.microsoft.com/beta/$metadata#deviceManagement/deviceConfigurations/$entity",
+  "@microsoft.graph.tips": "Use $select to choose only the properties your app needs, as this can lead to performance improvements. For example: GET deviceManagement/deviceConfigurations('<guid>')?$select=createdDateTime,description",
+  "id": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+  "displayName": "unit-test-iOS-trusted-root-certificate-example",
+  "description": "Install company root certificate for secure connections",
+  "createdDateTime": "2024-01-01T00:00:00Z",
+  "lastModifiedDateTime": "2024-01-01T00:00:00Z",
+  "roleScopeTagIds": ["11111111-1111-1111-1111-111111111111"],
+  "deviceManagementApplicabilityRuleOsEdition": null,
+  "deviceManagementApplicabilityRuleOsVersion": null,
+  "deviceManagementApplicabilityRuleDeviceMode": null,
+  "supportsScopeTags": true,
+  "version": 1,
+  "certFileName": "MicrosoftRootCertificateAuthority2011.cer",
+  "trustedRootCertificate": "MIIB1TCCAX8CFHl5T3FvbHJvb3RjZXJ0ZXhhbXBsZTANBgkqhkiG9w0BAQsFADAa"
+}

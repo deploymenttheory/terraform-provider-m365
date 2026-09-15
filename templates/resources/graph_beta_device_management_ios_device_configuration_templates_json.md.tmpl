@@ -1,0 +1,160 @@
+---
+page_title: "{{.Name}} {{.Type}} - {{.ProviderName}}"
+subcategory: "Device Management"
+
+description: |-
+{{ .Description | plainmarkdown | trimspace | prefixlines "  " }}
+---
+
+# {{.Name}} ({{.Type}})
+
+{{ .Description | trimspace }}
+
+## Microsoft Documentation
+
+- [iOS General Device Configuration resource type](https://learn.microsoft.com/en-us/graph/api/resources/intune-deviceconfig-iosgeneraldeviceconfiguration?view=graph-rest-beta)
+- [iOS Device Features Configuration resource type](https://learn.microsoft.com/en-us/graph/api/resources/intune-deviceconfig-iosdevicefeaturesconfiguration?view=graph-rest-beta)
+- [iOS Home Screen App resource type](https://learn.microsoft.com/en-us/graph/api/resources/intune-deviceconfig-ioshomescreenapp?view=graph-rest-beta)
+- [iOS Home Screen Folder resource type](https://learn.microsoft.com/en-us/graph/api/resources/intune-deviceconfig-ioshomescreenfolder?view=graph-rest-beta)
+
+## Microsoft Graph API Permissions
+
+The following client `application` permissions are needed in order to use this {{.Type | lower}}:
+
+**Required:**
+- `DeviceManagementConfiguration.Read.All`
+- `DeviceManagementConfiguration.ReadWrite.All`
+
+**Optional:**
+- `None` `[N/A]`
+
+## Version History
+
+| Version | Status | Notes |
+|---------|--------|-------|
+| v1.1.0 | Experimental | Initial release |
+
+## Example Usage
+
+{{ tffile "examples/resources/microsoft365_graph_beta_device_management_ios_device_configuration_templates_json/resource.tf" }}
+
+{{ .SchemaMarkdown | trimspace }}
+
+## Important Notes
+
+### Which resource to use
+
+This resource covers the two iOS/iPadOS template types whose property surface is too large to expose
+as typed attributes:
+
+| `odata_type` | Intune profile |
+|---|---|
+| `#microsoft.graph.iosGeneralDeviceConfiguration` | Device restrictions (187 settable properties) |
+| `#microsoft.graph.iosDeviceFeaturesConfiguration` | Device features — home screen layout, single sign-on, web content filters |
+
+For custom `.mobileconfig` payloads, trusted root certificates, SCEP/PKCS certificate profiles,
+Wi-Fi (personal and enterprise), Exchange ActiveSync email, and VPN profiles, use the typed sibling
+resource
+[`microsoft365_graph_beta_device_management_ios_device_configuration_templates`](graph_beta_device_management_ios_device_configuration_templates)
+instead.
+
+### The provider owns the envelope
+
+`settings_json` must contain **only** the settings tree. The provider injects `@odata.type`,
+`displayName`, `description` and `roleScopeTagIds` from the dedicated attributes. Supplying any of
+those four at the **root** of `settings_json` is rejected at plan time, because two sources of truth
+for the same property will eventually disagree.
+
+### Only the properties you declare are managed
+
+Microsoft Graph returns **every** property of these profile types on read, including ones that were
+never configured — reported as `false`, `null` or `[]`. A profile setting a single property comes back
+with roughly 190 keys. The provider therefore projects the response onto the shape of your
+configuration, keeping only the properties you declared.
+
+The consequence is worth understanding before you rely on it:
+
+- **`false` and "not set" are indistinguishable on the wire.** Graph reports both as `false`.
+- **Removing a property from `settings_json` stops Terraform tracking it. It does not reset it on the
+  server.** The value stays whatever it was.
+- **Declaring a property is how you begin managing it.** To return a setting to its default, set it
+  explicitly rather than deleting it.
+
+Updates use `PATCH`, which is consistent with this model: properties absent from `settings_json` are
+left untouched rather than cleared.
+
+### Nested `@odata.type` discriminators are required
+
+Only the **root** of `settings_json` is checked for envelope keys, and only the root is stripped from
+responses. Nested `@odata.type` values are load-bearing: Graph uses them to resolve polymorphic
+members, and omitting one is an error.
+
+Most commonly this applies to home screen layouts, where every icon must declare whether it is an app
+or a folder:
+
+```hcl
+settings_json = jsonencode({
+  homeScreenPages = [
+    {
+      "@odata.type" = "#microsoft.graph.iosHomeScreenPage"
+      displayName   = "Page 1"
+      icons = [
+        {
+          "@odata.type" = "#microsoft.graph.iosHomeScreenApp"
+          displayName   = "Safari"
+          bundleID      = "com.apple.mobilesafari"
+        },
+        {
+          "@odata.type" = "#microsoft.graph.iosHomeScreenFolder"
+          displayName   = "Utilities"
+          pages = [
+            {
+              # Note: a folder page uses `apps`, not `icons`.
+              "@odata.type" = "#microsoft.graph.iosHomeScreenFolderPage"
+              displayName   = "Utilities Page 1"
+              apps = [
+                {
+                  "@odata.type" = "#microsoft.graph.iosHomeScreenApp"
+                  displayName   = "Calculator"
+                  bundleID      = "com.apple.calculator"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+})
+```
+
+The two page types are **not** interchangeable, and this is the easiest mistake to make:
+
+| Type | Property | May contain |
+|---|---|---|
+| `iosHomeScreenPage` (top level) | `icons` | apps **and** folders |
+| `iosHomeScreenFolderPage` (inside a folder) | `apps` | apps only |
+
+Using `icons` on a folder page is rejected with `The property 'icons' does not exist on type
+...iosHomeScreenFolderPage`.
+
+The same nested-discriminator requirement applies to `singleSignOnExtension`,
+`contentFilterSettings` and `notificationSettings[]`.
+
+### Changing `odata_type` replaces the profile
+
+Graph cannot mutate a profile's type in place, so `odata_type` forces replacement.
+
+### Assignment required
+
+Policies must be assigned to device or user groups to be deployed.
+
+## Import
+
+Import is supported using the following syntax:
+
+{{ codefile "shell" "examples/resources/microsoft365_graph_beta_device_management_ios_device_configuration_templates_json/import.sh" }}
+
+On import there is no prior configuration to project against, so the **entire** stripped response is
+written to `settings_json` — expect roughly 190 properties for a device restrictions profile. Prune it
+down to the properties you actually intend to manage; anything you remove simply stops being tracked.

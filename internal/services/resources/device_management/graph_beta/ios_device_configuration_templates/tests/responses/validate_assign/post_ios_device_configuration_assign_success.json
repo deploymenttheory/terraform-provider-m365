@@ -1,0 +1,45 @@
+{
+  "@odata.context": "https://graph.microsoft.com/beta/$metadata#Collection(microsoft.graph.deviceConfigurationAssignment)",
+  "value": [
+    {
+      "@odata.type": "#microsoft.graph.deviceConfigurationAssignment",
+      "id": "assign-1111-1111-1111-1111",
+      "target": {
+        "@odata.type": "#microsoft.graph.groupAssignmentTarget",
+        "groupId": "00000000-0000-0000-0000-000000000002",
+        "deviceAndAppManagementAssignmentFilterId": "00000000-0000-0000-0000-000000000003",
+        "deviceAndAppManagementAssignmentFilterType": "include"
+      }
+    },
+    {
+      "@odata.type": "#microsoft.graph.deviceConfigurationAssignment",
+      "id": "assign-2222-2222-2222-2222",
+      "target": {
+        "@odata.type": "#microsoft.graph.groupAssignmentTarget",
+        "groupId": "00000000-0000-0000-0000-000000000002",
+        "deviceAndAppManagementAssignmentFilterId": "00000000-0000-0000-0000-000000000003",
+        "deviceAndAppManagementAssignmentFilterType": "exclude"
+      }
+    },
+    {
+      "@odata.type": "#microsoft.graph.deviceConfigurationAssignment",
+      "id": "assign-3333-3333-3333-3333",
+      "target": {
+        "@odata.type": "#microsoft.graph.exclusionGroupAssignmentTarget",
+        "groupId": "00000000-0000-0000-0000-000000000002",
+        "deviceAndAppManagementAssignmentFilterId": null,
+        "deviceAndAppManagementAssignmentFilterType": "none"
+      }
+    },
+    {
+      "@odata.type": "#microsoft.graph.deviceConfigurationAssignment",
+      "id": "assign-4444-4444-4444-4444",
+      "target": {
+        "@odata.type": "#microsoft.graph.exclusionGroupAssignmentTarget",
+        "groupId": "00000000-0000-0000-0000-000000000004",
+        "deviceAndAppManagementAssignmentFilterId": null,
+        "deviceAndAppManagementAssignmentFilterType": "none"
+      }
+    }
+  ]
+}

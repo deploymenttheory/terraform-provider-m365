@@ -1,0 +1,56 @@
+# The nested-discriminator drift regression: every node in the tree carries its own @odata.type,
+# which the root-only strip and validator must both leave alone.
+resource "microsoft365_graph_beta_device_management_ios_device_configuration_templates_json" "device_features" {
+  odata_type   = "#microsoft.graph.iosDeviceFeaturesConfiguration"
+  display_name = "unit-test-iOS-home-screen-layout"
+
+  # Every node carries its own @odata.type. This test confirms Graph accepts and returns them, which
+  # is the assumption the root-only strip boundary depends on.
+  #
+  # Note the two page types are NOT interchangeable:
+  #   iosHomeScreenPage       (top level)      -> "icons", may hold apps AND folders
+  #   iosHomeScreenFolderPage (inside a folder) -> "apps",  may hold apps only
+  # Using "icons" on a folder page is rejected with "The property 'icons' does not exist on type
+  # ...iosHomeScreenFolderPage".
+  settings_json = jsonencode({
+    homeScreenPages = [
+      {
+        "@odata.type" = "#microsoft.graph.iosHomeScreenPage"
+        displayName   = "Productivity"
+        icons = [
+          {
+            "@odata.type" = "#microsoft.graph.iosHomeScreenApp"
+            displayName   = "Outlook"
+            bundleID      = "com.microsoft.Office.Outlook"
+            isWebClip     = false
+          },
+          {
+            "@odata.type" = "#microsoft.graph.iosHomeScreenFolder"
+            displayName   = "Utilities"
+            pages = [
+              {
+                "@odata.type" = "#microsoft.graph.iosHomeScreenFolderPage"
+                displayName   = "Utilities Page 1"
+                apps = [
+                  {
+                    "@odata.type" = "#microsoft.graph.iosHomeScreenApp"
+                    displayName   = "Safari"
+                    bundleID      = "com.apple.mobilesafari"
+                    isWebClip     = false
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  })
+
+  timeouts = {
+    create = "50s"
+    read   = "5m"
+    update = "30m"
+    delete = "30m"
+  }
+}

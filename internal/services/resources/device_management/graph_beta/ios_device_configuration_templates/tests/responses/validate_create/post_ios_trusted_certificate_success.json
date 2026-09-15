@@ -1,0 +1,17 @@
+{
+  "@odata.context": "https://graph.microsoft.com/beta/$metadata#deviceManagement/deviceConfigurations/$entity",
+  "@odata.type": "#microsoft.graph.iosTrustedRootCertificate",
+  "id": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+  "lastModifiedDateTime": "2024-01-01T00:00:00Z",
+  "roleScopeTagIds": ["00000000-0000-0000-0000-000000000001"],
+  "supportsScopeTags": true,
+  "deviceManagementApplicabilityRuleOsEdition": null,
+  "deviceManagementApplicabilityRuleOsVersion": null,
+  "deviceManagementApplicabilityRuleDeviceMode": null,
+  "createdDateTime": "2024-01-01T00:00:00Z",
+  "description": "Install company root certificate for secure connections",
+  "displayName": "unit-test-iOS-trusted-root-certificate-example",
+  "version": 1,
+  "certFileName": "MicrosoftRootCertificateAuthority2011.cer",
+  "trustedRootCertificate": "MIIB1TCCAX8CFHl5T3FvbHJvb3RjZXJ0ZXhhbXBsZTANBgkqhkiG9w0BAQsFADAa"
+}

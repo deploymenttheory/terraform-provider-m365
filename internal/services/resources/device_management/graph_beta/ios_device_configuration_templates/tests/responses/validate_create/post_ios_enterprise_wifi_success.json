@@ -1,0 +1,15 @@
+{
+  "@odata.context": "https://graph.microsoft.com/beta/$metadata#deviceManagement/deviceConfigurations/$entity",
+  "@odata.type": "#microsoft.graph.iosEnterpriseWiFiConfiguration",
+  "id": "cccccccc-dddd-eeee-ffff-000000000000",
+  "lastModifiedDateTime": "2024-01-01T00:00:00Z",
+  "roleScopeTagIds": ["00000000-0000-0000-0000-000000000001"],
+  "supportsScopeTags": true,
+  "deviceManagementApplicabilityRuleOsEdition": null,
+  "deviceManagementApplicabilityRuleOsVersion": null,
+  "deviceManagementApplicabilityRuleDeviceMode": null,
+  "createdDateTime": "2024-01-01T00:00:00Z",
+  "description": "Enterprise Wi-Fi with EAP-TLS authentication",
+  "displayName": "unit-test-iOS-enterprise-wifi-example",
+  "version": 1
+}

@@ -1,0 +1,93 @@
+---
+page_title: "{{.Name}} {{.Type}} - {{.ProviderName}}"
+subcategory: "Device Management"
+
+description: |-
+{{ .Description | plainmarkdown | trimspace | prefixlines "  " }}
+---
+
+# {{.Name}} ({{.Type}})
+
+{{ .Description | trimspace }}
+
+## Microsoft Documentation
+
+- [iOS Custom Configuration resource type](https://learn.microsoft.com/en-us/graph/api/resources/intune-deviceconfig-ioscustomconfiguration?view=graph-rest-beta)
+- [iOS Trusted Root Certificate resource type](https://learn.microsoft.com/en-us/graph/api/resources/intune-deviceconfig-iostrustedrootcertificate?view=graph-rest-beta)
+- [iOS Wi-Fi Configuration resource type](https://learn.microsoft.com/en-us/graph/api/resources/intune-deviceconfig-ioswificonfiguration?view=graph-rest-beta)
+- [iOS SCEP Certificate Profile resource type](https://learn.microsoft.com/en-us/graph/api/resources/intune-deviceconfig-iosscepcertificateprofile?view=graph-rest-beta)
+- [iOS PKCS Certificate Profile resource type](https://learn.microsoft.com/en-us/graph/api/resources/intune-deviceconfig-iospkcscertificateprofile?view=graph-rest-beta)
+- [iOS Enterprise Wi-Fi Configuration resource type](https://learn.microsoft.com/en-us/graph/api/resources/intune-deviceconfig-iosenterprisewificonfiguration?view=graph-rest-beta)
+- [iOS EAS Email Profile Configuration resource type](https://learn.microsoft.com/en-us/graph/api/resources/intune-deviceconfig-ioseasemailprofileconfiguration?view=graph-rest-beta)
+- [iOS VPN Configuration resource type](https://learn.microsoft.com/en-us/graph/api/resources/intune-deviceconfig-iosvpnconfiguration?view=graph-rest-beta)
+
+## Microsoft Graph API Permissions
+
+The following client `application` permissions are needed in order to use this {{.Type | lower}}:
+
+**Required:**
+- `DeviceManagementConfiguration.Read.All`
+- `DeviceManagementConfiguration.ReadWrite.All`
+
+**Optional:**
+- `None` `[N/A]`
+
+## Version History
+
+| Version | Status | Notes |
+|---------|--------|-------|
+| v1.1.0 | Experimental | Initial release |
+
+## Example Usage
+
+{{ tffile "examples/resources/microsoft365_graph_beta_device_management_ios_device_configuration_templates/resource.tf" }}
+
+{{ .SchemaMarkdown | trimspace }}
+
+## Important Notes
+
+- **One configuration per resource**: Exactly one of `custom_configuration`, `trusted_certificate`,
+  `wifi`, `scep_certificate`, `pkcs_certificate`, `enterprise_wifi`, `eas_email`, or `vpn` must be
+  set. Each maps to a distinct Graph `@odata.type`, and the type of an existing profile cannot be
+  changed in place — switching blocks recreates the profile.
+- **IKEv2 VPN profiles are not supported**: `ikEv2` is deliberately excluded from `connection_type`.
+  IKEv2 uses a separate Graph type (`iosikEv2VpnConfiguration`) with roughly 23 additional
+  properties — including nested security association parameters — that this resource does not model.
+  Creating one here would round-trip lossily, so the validator rejects it. An existing IKEv2 profile
+  imported into this resource logs a warning and exposes only the shared VPN properties.
+- **On-demand VPN rules are not yet modelled**: the `onDemandRules` property is not exposed. Rules
+  configured outside Terraform are left untouched.
+- **Personal vs enterprise Wi-Fi**: use `wifi` for open/WEP/WPA-Personal networks (which take a
+  `pre_shared_key`) and `enterprise_wifi` for 802.1x networks (which authenticate via EAP). The
+  enterprise block intentionally has no `pre_shared_key`.
+- **No deployment channel on iOS**: Unlike the macOS equivalent, iOS profiles have no
+  `deployment_channel` property. iOS profiles are always delivered over the device channel.
+- **iOS PKCS is narrower than macOS PKCS**: iOS PKCS certificate profiles have no key size, key
+  usage, extended key usage or SCEP server URL properties. Those apply only to `scep_certificate`.
+- **`key_usage`, `subject_alternative_name_type` and `eas_services` are bitmasks**: Graph stores each
+  as a single comma-joined value rather than a list. They are modelled here as sets and combined on
+  write / decomposed on read, so multiple values may be supplied.
+- **Boolean attributes are computed**: Graph returns every boolean property, using `false` for ones
+  that were never set. Every optional boolean in this resource is therefore also computed — omitting
+  one means "let the server decide" rather than "set it to false", and its value will appear in state
+  after apply.
+- **`eas_email` has two distinct username source attributes**: `username_source` and
+  `email_address_source` accept `userPrincipalName` / `primarySmtpAddress`, while
+  `username_aad_source` additionally accepts `samAccountName`. They map to different Graph enums and
+  are not interchangeable.
+- **`root_certificate_odata_bind` is not returned by Graph**: The SCEP root certificate reference is
+  a navigation property sent as an `@odata.bind` annotation. Graph accepts it on write but does not
+  echo it back, so the provider preserves the configured value in state. Accepts either a bare GUID
+  or the full `https://graph.microsoft.com/beta/...` URL. On import the bare-GUID form cannot be
+  recovered; the expanded URL is used instead.
+- **`pre_shared_key` is never returned by Graph**: The Wi-Fi pre-shared key is write-only. It is
+  preserved in state from configuration rather than read back, so a key changed directly in Intune
+  will not be detected as drift. On import the value is unknown and must be supplied in
+  configuration.
+- **Assignment Required**: Policies must be assigned to device or user groups to be deployed.
+
+## Import
+
+Import is supported using the following syntax:
+
+{{ codefile "shell" "examples/resources/microsoft365_graph_beta_device_management_ios_device_configuration_templates/import.sh" }}

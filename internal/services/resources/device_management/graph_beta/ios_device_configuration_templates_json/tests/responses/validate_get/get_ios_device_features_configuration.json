@@ -1,0 +1,90 @@
+{
+  "@odata.context": "https://graph.microsoft.com/beta/$metadata#deviceManagement/deviceConfigurations/$entity",
+  "@odata.type": "#microsoft.graph.iosDeviceFeaturesConfiguration",
+  "id": "1f3a98ce-ef3d-58d3-b7ac-d9dcfa934153",
+  "lastModifiedDateTime": "2026-03-12T08:19:05.4757913Z",
+  "roleScopeTagIds": ["0"],
+  "supportsScopeTags": true,
+  "deviceManagementApplicabilityRuleOsEdition": null,
+  "deviceManagementApplicabilityRuleOsVersion": null,
+  "deviceManagementApplicabilityRuleDeviceMode": null,
+  "createdDateTime": "2025-10-31T15:01:55.0624773Z",
+  "description": null,
+  "displayName": "unit-test-iOS-home-screen-layout",
+  "version": 1,
+  "ssoExtensionKey": "iosSingleSignOnExtension",
+  "commonCredentialKerberosExtensibleSSOEntities": ["realm", "domains"],
+  "kerberosExtensibleSSOEntities": [
+    "blockAutomaticLogin",
+    "requireUserPresence",
+    "isDefaultRealm",
+    "userPrincipalName",
+    "cacheName",
+    "passwordMinimumLength",
+    "signInHelpText",
+    "managedAppsInBundleIdACLIncluded"
+  ],
+  "commonCredentialRedirectExtensibleSSOEntities": ["extensionIdentifier", "teamIdentifier"],
+  "nonKerberosExtensibleSSOEntities": ["configurations"],
+  "redirectExtensibleSSOEntities": ["urlPrefixes"],
+  "azureAdExtensibleSSOEntities": ["enableSharedDeviceMode", "bundleIdAccessControlList"],
+  "nonAzureAdExtensibleSSOEntities": [
+    "realm",
+    "domains",
+    "blockAutomaticLogin",
+    "extensionIdentifier",
+    "teamIdentifier",
+    "urlPrefixes"
+  ],
+  "allExtensibleSSOEntities": [
+    "enableSharedDeviceMode",
+    "bundleIdAccessControlList",
+    "blockAutomaticLogin",
+    "realm",
+    "domains",
+    "urlPrefixes",
+    "configurations"
+  ],
+  "assetTagTemplate": null,
+  "lockScreenFootnote": null,
+  "contentFilterSettings": null,
+  "singleSignOnExtension": null,
+  "singleSignOnSettings": null,
+  "iosSingleSignOnExtension": null,
+  "wallpaperDisplayLocation": "notConfigured",
+  "wallpaperImage": null,
+  "homeScreenDockIcons": [],
+  "notificationSettings": [],
+  "airPrintDestinations": [],
+  "homeScreenGridWidth": null,
+  "homeScreenGridHeight": null,
+  "homeScreenPages": [
+    {
+      "displayName": "Productivity",
+      "icons": [
+        {
+          "@odata.type": "#microsoft.graph.iosHomeScreenApp",
+          "displayName": "Outlook",
+          "bundleID": "com.microsoft.Office.Outlook",
+          "isWebClip": false
+        },
+        {
+          "@odata.type": "#microsoft.graph.iosHomeScreenFolder",
+          "displayName": "Utilities",
+          "pages": [
+            {
+              "displayName": "Utilities Page 1",
+              "apps": [
+                {
+                  "displayName": "Safari",
+                  "bundleID": "com.apple.mobilesafari",
+                  "isWebClip": false
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

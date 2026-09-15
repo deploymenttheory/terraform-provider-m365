@@ -1,0 +1,82 @@
+{
+  "@odata.type": "#microsoft.graph.iosVpnConfiguration",
+  "@odata.context": "https://graph.microsoft.com/beta/$metadata#deviceManagement/deviceConfigurations/$entity",
+  "id": "eeeeeeee-ffff-0000-1111-222222222222",
+  "displayName": "unit-test-iOS-vpn-example",
+  "description": "Per-app VPN for corporate applications",
+  "createdDateTime": "2024-01-01T00:00:00Z",
+  "lastModifiedDateTime": "2024-01-01T00:00:00Z",
+  "roleScopeTagIds": ["11111111-1111-1111-1111-111111111111"],
+  "deviceManagementApplicabilityRuleOsEdition": null,
+  "deviceManagementApplicabilityRuleOsVersion": null,
+  "deviceManagementApplicabilityRuleDeviceMode": null,
+  "supportsScopeTags": true,
+  "version": 1,
+  "connectionName": "Corporate VPN",
+  "connectionType": "ciscoAnyConnectV2",
+  "authenticationMethod": "certificate",
+  "identifier": null,
+  "providerType": "packetTunnel",
+  "realm": null,
+  "role": null,
+  "loginGroupOrDomain": null,
+  "enableSplitTunneling": true,
+  "enablePerApp": true,
+  "includeAllNetworks": false,
+  "excludeLocalNetworks": true,
+  "safariDomains": ["intranet.example.com", "portal.example.com"],
+  "associatedDomains": [],
+  "excludedDomains": ["public.example.com"],
+  "disconnectOnIdle": true,
+  "disconnectOnIdleTimerInSeconds": 300,
+  "disableOnDemandUserOverride": true,
+  "optInToDeviceIdSharing": false,
+  "microsoftTunnelSiteId": null,
+  "strictEnforcement": false,
+  "cloudName": null,
+  "userDomain": null,
+  "excludeList": [],
+  "onDemandRules": [],
+  "server": {
+    "@odata.type": "microsoft.graph.vpnServer",
+    "address": "vpn.example.com",
+    "description": "Primary VPN gateway",
+    "isDefaultServer": true
+  },
+  "proxyServer": {
+    "@odata.type": "microsoft.graph.vpnProxyServer",
+    "address": "proxy.example.com",
+    "port": 8080,
+    "automaticConfigurationScriptUrl": null
+  },
+  "targetedMobileApps": [
+    {
+      "@odata.type": "microsoft.graph.appListItem",
+      "name": "Outlook",
+      "appId": "com.microsoft.Office.Outlook",
+      "publisher": "Microsoft Corporation",
+      "appStoreUrl": null
+    },
+    {
+      "@odata.type": "microsoft.graph.appListItem",
+      "name": "Teams",
+      "appId": "com.microsoft.skype.teams",
+      "publisher": "Microsoft Corporation",
+      "appStoreUrl": null
+    }
+  ],
+  "customData": [
+    {
+      "@odata.type": "microsoft.graph.keyValue",
+      "key": "vendorSetting",
+      "value": "enabled"
+    }
+  ],
+  "customKeyValueData": [
+    {
+      "@odata.type": "microsoft.graph.keyValuePair",
+      "name": "tunnelMode",
+      "value": "split"
+    }
+  ]
+}

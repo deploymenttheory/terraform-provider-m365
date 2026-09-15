@@ -1,0 +1,15 @@
+{
+  "@odata.context": "https://graph.microsoft.com/beta/$metadata#deviceManagement/deviceConfigurations/$entity",
+  "@odata.type": "#microsoft.graph.iosGeneralDeviceConfiguration",
+  "id": "0e2f87bd-de2c-47c2-a69b-c8cbe9823042",
+  "lastModifiedDateTime": "2026-03-12T08:19:05.4757913Z",
+  "roleScopeTagIds": ["0"],
+  "supportsScopeTags": true,
+  "deviceManagementApplicabilityRuleOsEdition": null,
+  "deviceManagementApplicabilityRuleOsVersion": null,
+  "deviceManagementApplicabilityRuleDeviceMode": null,
+  "createdDateTime": "2025-10-31T15:01:55.0624773Z",
+  "description": null,
+  "displayName": "unit-test-iOS-disable-camera",
+  "version": 1
+}
