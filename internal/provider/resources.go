@@ -122,6 +122,7 @@ import (
 	graphBetaDeviceManagementWindowsQualityExpeditePolicy "github.com/deploymenttheory/terraform-provider-microsoft365/internal/services/resources/device_management/graph_beta/windows_quality_update_expedite_policy"
 	graphBetaDeviceManagementWindowsQualityUpdatePolicy "github.com/deploymenttheory/terraform-provider-microsoft365/internal/services/resources/device_management/graph_beta/windows_quality_update_policy"
 	graphBetaDeviceManagementWindowsRemediationScript "github.com/deploymenttheory/terraform-provider-microsoft365/internal/services/resources/device_management/graph_beta/windows_remediation_script"
+	graphBetaDeviceManagementWindowsTrustedRootCertificate "github.com/deploymenttheory/terraform-provider-microsoft365/internal/services/resources/device_management/graph_beta/windows_trusted_root_certificate"
 	graphBetaDeviceManagementWindowsUpdateRing "github.com/deploymenttheory/terraform-provider-microsoft365/internal/services/resources/device_management/graph_beta/windows_update_ring"
 
 	// Graph v1.0 - Intune resources
@@ -348,6 +349,7 @@ func (p *M365Provider) Resources(ctx context.Context) []func() resource.Resource
 		graphBetaDeviceManagementWindowsFeatureUpdatePolicy.NewWindowsFeatureUpdatePolicyResource,
 		graphBetaDeviceManagementWindowsPlatformScript.NewWindowsPlatformScriptResource,
 		graphBetaDeviceManagementWindowsRemediationScript.NewDeviceHealthScriptResource,
+		graphBetaDeviceManagementWindowsTrustedRootCertificate.NewWindowsTrustedRootCertificateResource,
 		graphBetaDeviceManagementWindowsQualityExpeditePolicy.NewWindowsQualityUpdateExpeditePolicyResource,
 		graphBetaDeviceManagementWindowsQualityUpdatePolicy.NewWindowsQualityUpdatePolicyResource,
 		graphBetaWindowsUpdatesAutopatchContentApproval.NewWindowsUpdatesAutopatchContentApprovalResource,
